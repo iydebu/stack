@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <Windows.h>
 using namespace std;
 
 class Negative_Size : exception
@@ -92,6 +93,7 @@ void logo()
 
 int main()
 {
+    SetConsoleTitle("Stack");
     logo();
     int size = 0, ch, ch1;
     cout << "Enter the stack size: ";
