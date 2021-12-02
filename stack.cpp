@@ -14,40 +14,49 @@ class StackOverFlow : exception
 class StackUnderFlow : exception
 {
 };
-
+template <class t = int>
 class Stack
 {
 private:
-    int *stk;
+    t *stk;
     int top = -1;
     int size;
 
 public:
     Stack();
     Stack(int size);
-    void push(int number);
-    int pop();
-    friend ostream &operator<<(ostream &o, Stack &s);
+    void push(t number);
+    t pop();
+    void show();
+    friend ostream &operator<<(ostream &o, Stack<t> &s)
+    {
+        for (int i = 0; i <= s.top; i++)
+        {
+            o << s.stk[i] << " ";
+        }
+        o << endl;
+        return o;
+    }
 };
-
-Stack::Stack()
+template <class t>
+Stack<t>::Stack()
 {
     size = 5;
-    stk = new int[size];
+    stk = new t[size];
 }
-
-Stack::Stack(int size)
+template <class t>
+Stack<t>::Stack(int size)
 {
     if (size < 0)
         throw Negative_Size();
     else
     {
         this->size = size;
-        stk = new int[size];
+        stk = new t[size];
     }
 }
-
-void Stack::push(int number)
+template <class t>
+void Stack<t>::push(t number)
 {
     if (top == size - 1)
         throw StackOverFlow();
@@ -57,27 +66,32 @@ void Stack::push(int number)
         stk[top] = number;
     }
 }
-
-int Stack::pop()
+template <class t>
+t Stack<t>::pop()
 {
     if (top == -1)
         throw StackUnderFlow();
-    else
     {
         return stk[top--];
     }
 }
+// template <class t>
+// ostream &operator<<(ostream &o, Stack<t> &s)
+// {
+//     for (int i = 0; i <= s.top; i++)
+//     {
+//         o << s.stk[i] << " ";
+//     }
+//     o << endl;
+//     return o;
+// }
 
-ostream &operator<<(ostream &o, Stack &s)
-{
-    for (int i = 0; i <= s.top; i++)
-    {
-        o << s.stk[i] << " ";
-    }
-    o << endl;
-    return o;
-}
-
+// template <class t>
+// void Stack<t>::show()
+// {
+//     for (int i = 0; i <= top; i++)
+//         cout << stk[i] << "\t";
+// }
 void logo()
 {
     cout << " $$$$$$\\    $$\\                         $$\\  " << endl
@@ -90,66 +104,115 @@ void logo()
          << " \\______/    \\____/  \\_______| \\_______|\\__|  \\__|" << endl
          << endl;
 }
-
-int main()
+template <class t>
+void run(Stack<t> s)
 {
-    SetConsoleTitle("Stack");
-    logo();
-    int size = 0, ch, ch1;
-    cout << "Enter the stack size: ";
-    cin >> size;
-    Stack s(size);
+    int ch1;
     do
     {
-        do
+        cout << "Choose the option: " << endl
+             << "1. Push" << endl
+             << "2. Pop" << endl
+             << "3. Show" << endl
+             << "4. Exit" << endl
+             << "Option: ";
+        cin >> ch1;
+        switch (ch1)
         {
-            cout << "Choose the option: " << endl
-                 << "1. Push" << endl
-                 << "2. Pop" << endl
-                 << "3. Show" << endl
-                 << "Option: ";
-            cin >> ch1;
-            switch (ch1)
-            {
-            case 1:
-            {
-                cout << endl;
-                int ele = 0;
-                cout << "Enter the element: ";
-                cin >> ele;
-                s.push(ele);
-                cout << "successfully pushed !" << endl;
-                break;
-            }
-            case 2:
-            {
-                cout << endl;
-                cout << "Element: " << s.pop() << endl;
-                cout << "successfully popped !" << endl;
-                break;
-            }
-            case 3:
-            {
-                cout << endl;
-                cout << "Stack :" << s << endl;
-                break;
-            }
-            default:
-            {
-                cout << endl;
-                cout << "Wrong option -_-!" << endl;
-                break;
-            }
-            }
-            system("pause");
-            system("cls");
-            logo();
-        } while (!(ch1 == 1 || ch1 == 2 || ch1 == 3));
+        case 1:
+        {
+            cout << endl;
+            t ele = 0;
+            cout << "Enter the element: ";
+            cin >> ele;
+            s.push(ele);
+            cout << "successfully pushed !" << endl;
+            break;
+        }
+        case 2:
+        {
+            cout << endl;
+            t x = s.pop();
+            cout << "Element: " << x << endl;
+            cout << "successfully popped !" << endl;
+            break;
+        }
+        case 3:
+        {
+            cout << endl;
+            cout << "Stack :" << s << endl;
+            break;
+        }
+        case 4:
+        {
+            cout << "Exit!" << endl;
+            break;
+        }
+        default:
+        {
+            cout << endl;
+            cout << "Wrong option -_-!" << endl;
+            break;
+        }
+        }
+        system("pause");
+        system("cls");
+        logo();
+    } while (ch1 != 4);
+}
+int main()
+{
+    // SetConsoleTitle("Stack");
+    logo();
+    int size = 0, ch;
+    cout << "Enter the stack size: ";
+    cin >> size;
+    cout << "Welcome to Stack!" << endl
+         << endl
+         << "Which data type you want for stack? " << endl
+         << "choose the option " << endl
+         << "1.Integer" << endl
+         << "2.Float" << endl
+         << "3.Char" << endl
+         << "4.Double" << endl
+         << "Option: " << endl;
+    cin >> ch;
+    switch (ch)
+    {
+    case 1:
+    {
+        Stack<int> s(size);
+        run(s);
+        break;
+    }
+
+    case 2:
+    {
+        Stack<float> s(size);
+        run(s);
+        break;
+    }
+
+    case 3:
+    {
+        Stack<char> s(size);
+        run(s);
+        break;
+    }
+
+    case 4:
+    {
+        Stack<double> s(size);
+        run(s);
+        break;
+    }
+    default:
+    {
         cout << endl;
-        cout << "Do you want to continue?" << endl
-             << "Enter '1' for yes and **any key** for no!" << endl;
-        cin >> ch;
-    } while (ch == 1);
+        cout << "Wrong option -_-!" << endl;
+        break;
+    }
+    }
     cout << endl
          << "Thanks for using!" << endl
          << "**** DEBU ****" << endl;
